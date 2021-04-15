@@ -32,6 +32,7 @@
 <script type="text/javascript">
     // 创建地图实例
     var map = new BMap.Map("container");
+
     var circle = "",
         marker = "";
     $.ajax({
@@ -71,22 +72,33 @@
                 // map.addOverlay(marker);
 
                 // 添加地图覆盖物 
-                circle = new BMap.Circle(point, radius, {
-                    fillColor: "#7EA3CA",
-                    strokeWeight: 1,
-                    fillOpacity: 0.7,
-                    strokeOpacity: 0.7,
-                    enableEditing: false
-                });
+                if (v.tradestate != 0) {
+                    circle = new BMap.Circle(point, radius, {
+                        fillColor: "red",
+                        strokeWeight: 1,
+                        fillOpacity: 0.7,
+                        strokeOpacity: 0.7,
+                        enableEditing: false
+                    });
+                } else {
+                    circle = new BMap.Circle(point, radius, {
+                        fillColor: "#7EA3CA",
+                        strokeWeight: 1,
+                        fillOpacity: 0.7,
+                        strokeOpacity: 0.7,
+                        enableEditing: false
+                    });
+                }
+
                 map.addOverlay(circle);
-                var html = "<div index=" + i + " id='"+v.id+"'>"+
-                        "<p class='name'>" + name +"</p>"+
-                        "<p>"+
-                        "<span class='province'>"+province+"</span>"+
-                        "<span class='city'>"+city+"</span>"+
-                        "<span class='area'>"+area+"</span>"+                        
-                        "</p>"+
-                        "</div>";
+                var html = "<div index=" + i + " id='" + v.id + "'>" +
+                    "<p class='name'>" + name + "</p>" +
+                    "<p>" +
+                    "<span class='province'>" + province + "</span>" +
+                    "<span class='city'>" + city + "</span>" +
+                    "<span class='area'>" + area + "</span>" +
+                    "</p>" +
+                    "</div>";
                 var infoWindow = new BMap.InfoWindow(html);
                 //创建窗口信息
                 marker.infoWindow = infoWindow;
@@ -100,7 +112,7 @@
                     console.log($(e.target.infoWindow.content).find(".area").text());
                     console.log($(e.target.infoWindow.content).attr("index"));
                     console.log($(e.target.infoWindow.content).attr("id"));
-                    
+
                 });
                 map.addOverlay(marker); //添加标注到地图
             })
