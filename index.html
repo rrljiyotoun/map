@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>map</title>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+
+        #container {
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=18ukXzuN3OGZPdD77dM0dDdyS5fl7cVB">
+        //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+<script src="./jquery1.7.2.js"></script>
+<script type="text/javascript">
+    // 创建地图实例
+    var map = new BMap.Map("container");
+    var circle = "",
+        marker = "";
+    $.ajax({
+        type: "GET",
+        url: "http://zsyym5.natappfree.cc/bc/index.php/Index/allPoint",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            console.log(data);
+            sessionStorage.setItem("mapJosn", JSON.stringify(data));
+            $(data).each(function (i, v) {
+                var lng = v.longitude;
+                var lat = v.latitude;
+                var name = v.name;
+                var province = v.province;
+                var city = v.city;
+                var area = v.province;
+                var radius = v.radius;
+                // 初始化地图，设置中心点坐标和地图级别
+                var point = new BMap.Point(lng, lat);
+                // 创建点坐标  
+                map.centerAndZoom(point, 12);
+                marker = new BMap.Marker(point);
+                map.addOverlay(marker);
+                // 自定义图标
+                // 创建图标对象
+                // var myIcon = new BMap.Icon("map.png", new BMap.Size(20, 20), {
+                //     anchor: new BMap.Size(20, 20),
+                //     // 设置图片偏移。       
+                //     imageOffset: new BMap.Size(0,0) 
+                //     // 设置图片偏移    
+                // });
+                // 创建标注对象并添加到地图   
+                // marker = new BMap.Marker(point, {
+                //     icon: myIcon
+                // });
+                // map.addOverlay(marker);
+
+                // 添加地图覆盖物 
+                circle = new BMap.Circle(point, radius, {
+                    fillColor: "#7EA3CA",
+                    strokeWeight: 1,
+                    fillOpacity: 0.7,
+                    strokeOpacity: 0.7,
+                    enableEditing: false
+                });
+                map.addOverlay(circle);
+                var html = "<div index=" + i + " id='"+v.id+"'>"+
+                        "<p class='name'>" + name +"</p>"+
+                        "<p>"+
+                        "<span class='province'>"+province+"</span>"+
+                        "<span class='city'>"+city+"</span>"+
+                        "<span class='area'>"+area+"</span>"+                        
+                        "</p>"+
+                        "</div>";
+                var infoWindow = new BMap.InfoWindow(html);
+                //创建窗口信息
+                marker.infoWindow = infoWindow;
+                //给当前标注新增一个属性以便保存窗口信息infoWindow
+                marker.addEventListener("click", function (e) {
+                    //添加标注的点击事件回调
+                    this.openInfoWindow(e.target.infoWindow);
+                    console.log($(e.target.infoWindow.content).find(".name").text());
+                    console.log($(e.target.infoWindow.content).find(".province").text());
+                    console.log($(e.target.infoWindow.content).find(".city").text());
+                    console.log($(e.target.infoWindow.content).find(".area").text());
+                    console.log($(e.target.infoWindow.content).attr("index"));
+                    console.log($(e.target.infoWindow.content).attr("id"));
+                    
+                });
+                map.addOverlay(marker); //添加标注到地图
+            })
+        },
+        error: function () {
+            console.log("错误");
+        }
+    });
+    map.addControl(new BMap.NavigationControl({
+        // 靠左上角位置  
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        // LARGE类型  
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        // 启用显示定位  
+        enableGeolocation: true
+    }));
+    // 添加带有定位的导航控件
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    map.addControl(new BMap
+        .MapTypeControl());
+    // map.setCurrentCity("郑州");
+</script>
+
+</html>
