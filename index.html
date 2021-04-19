@@ -104,6 +104,7 @@
                 var infoWindow = new BMap.InfoWindow(html);
                 //创建窗口信息
                 marker.infoWindow = infoWindow;
+                marker.openInfoWindow(infoWindow);
                 //给当前标注新增一个属性以便保存窗口信息infoWindow
                 marker.addEventListener("click", function (e) {
                     //添加标注的点击事件回调
@@ -114,6 +115,7 @@
                     console.log($(e.target.infoWindow.content).find(".area").text());
                     console.log($(e.target.infoWindow.content).attr("index"));
                     console.log($(e.target.infoWindow.content).attr("id"));
+                    if()
 
                 });
                 map.addOverlay(marker); //添加标注到地图
@@ -134,8 +136,7 @@
     // 添加带有定位的导航控件
     map.addControl(new BMap.ScaleControl());
     map.addControl(new BMap.OverviewMapControl());
-    map.addControl(new BMap
-        .MapTypeControl());
+    map.addControl(new BMap.MapTypeControl());
     // map.setCurrentCity("郑州");
 </script>
 
