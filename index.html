@@ -110,6 +110,7 @@
                     //添加标注的点击事件回调
                     if(!flag){
                         this.openInfoWindow(e.target.infoWindow);
+                        flag = true;
                     }else {
                         if(v.tradestate!=0){
                             alert("该商圈暂无法认购");
