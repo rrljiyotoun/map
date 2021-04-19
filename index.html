@@ -37,12 +37,13 @@
         marker = "";
     $.ajax({
         type: "GET",
-        url: "http://zsyym5.natappfree.cc/bc/index.php/Index/allPoint",
+        url: "http://fast.scsj.net.cn/h/index/allPoint",
         dataType: "json",
         async: false,
         success: function (data) {
-            console.log(data);
-            sessionStorage.setItem("mapJosn", JSON.stringify(data));
+            console.log(data.data);
+            sessionStorage.setItem("mapJosn", JSON.stringify(data.data));
+            var data =data.data;
             $(data).each(function (i, v) {
                 var lng = v.longitude;
                 var lat = v.latitude;
