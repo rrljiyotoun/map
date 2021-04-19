@@ -36,17 +36,18 @@
 
     var circle = "",
         marker = "",
-        flag = false;
+        
     $.ajax({
         type: "GET",
         url: "http://fast.scsj.net.cn/h/index/allPoint",
         dataType: "json",
         async: false,
         success: function (data) {
-            console.log(data.data);
+            // console.log(data.data);
             sessionStorage.setItem("mapJosn", JSON.stringify(data.data));
             var data =data.data;
             $(data).each(function (i, v) {
+                var flagi = false;
                 var lng = v.longitude;
                 var lat = v.latitude;
                 var name = v.name;
@@ -110,14 +111,20 @@
                     //添加标注的点击事件回调
                     if(!flag){
                         this.openInfoWindow(e.target.infoWindow);
-                        flag = true;
+                        flagi = true; 
                     }else {
-                        if(v.tradestate!=0){
-                            alert("该商圈暂无法认购");
-                            return;
-                        }
-                        location.href = "./choice.html?index="+v.index;
+                        var index = $(e.target.infoWindow.content).attr("index");
+                        lication.href = "./choice.html?index="+index;
                     }
+                    
+                    console.log($(e.target.infoWindow.content).find(".name").text());
+                    console.log($(e.target.infoWindow.content).find(".province").text());
+                    console.log($(e.target.infoWindow.content).find(".city").text());
+                    console.log($(e.target.infoWindow.content).find(".area").text());
+                    console.log($(e.target.infoWindow.content).attr("index"));
+                    console.log($(e.target.infoWindow.content).attr("id"));
+                    
+
                 });
                 map.addOverlay(marker); //添加标注到地图
             })
