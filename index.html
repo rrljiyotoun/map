@@ -35,7 +35,8 @@
     var map = new BMap.Map("container");
 
     var circle = "",
-        marker = "";
+        marker = "",
+        flag = false;
     $.ajax({
         type: "GET",
         url: "http://fast.scsj.net.cn/h/index/allPoint",
@@ -104,19 +105,18 @@
                 var infoWindow = new BMap.InfoWindow(html);
                 //创建窗口信息
                 marker.infoWindow = infoWindow;
-                marker.openInfoWindow(infoWindow);
                 //给当前标注新增一个属性以便保存窗口信息infoWindow
                 marker.addEventListener("click", function (e) {
                     //添加标注的点击事件回调
-                    this.openInfoWindow(e.target.infoWindow);
-                    console.log($(e.target.infoWindow.content).find(".name").text());
-                    console.log($(e.target.infoWindow.content).find(".province").text());
-                    console.log($(e.target.infoWindow.content).find(".city").text());
-                    console.log($(e.target.infoWindow.content).find(".area").text());
-                    console.log($(e.target.infoWindow.content).attr("index"));
-                    console.log($(e.target.infoWindow.content).attr("id"));
-                    // if()
-
+                    if(!flag){
+                        this.openInfoWindow(e.target.infoWindow);
+                    }else {
+                        if(v.tradestate!=0){
+                            alert("该商圈暂无法认购");
+                            return;
+                        }
+                        lication.href = "./choice.html?index="+v.index;
+                    }
                 });
                 map.addOverlay(marker); //添加标注到地图
             })

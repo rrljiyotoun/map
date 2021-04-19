@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -10,22 +11,46 @@
     <title>商圈认购 | 商超财富宝</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
 </head>
+
 <body>
     <div class="container">这是商圈认购页面</div>
     <input type="text" class="name">
     <input type="text" class="province">
-    <input type="text" class="">
-    <input type="text" class="name">
-    <input type="text" class="name">
-    <input type="text" class="name">
-    <input type="text" class="name">
-    <input type="text" class="name">
-    
+    <input type="text" class="city">
+    <input type="text" class="area">
+    <input type="text" class="mapId">
 </body>
 <script src="./js/jquery1.7.2.js"></script>
 <script>
-    $(function(){
-
+    // 获取url中code值
+    function getUrlParams(name) {
+        var search = document.location.search
+        var pattern = new RegExp('[?&]' + name + '\=([^&]+)', 'g')
+        var matcher = pattern.exec(search)
+        var items = null
+        if (null != matcher) {
+            try {
+                items = decodeURIComponent(decodeURIComponent(matcher[1]))
+            } catch (e) {
+                try {
+                    items = decodeURIComponent(matcher[1])
+                } catch (e) {
+                    items = matcher[1]
+                }
+            }
+        }
+        return items
+    }
+    $(function () {
+        var i = getUrlParams("index");
+        var mapJson = sessionStorage.getItem("mapJson");
+        console.log(mapJson[i]);
+        $(".name").val(mapJson[i].name)
+        $(".province").val(mapJson[i].province)
+        $(".city").val(mapJson[i].city)
+        $(".area").val(mapJson[i].area)
+        $(".mapId").val(mapJson[i].mapId)
     })
 </script>
+
 </html>
